@@ -1,0 +1,49 @@
+{% extends 'EM_base-layout.html' %}
+{% load staticfiles %}
+
+{% block PageContent %}
+
+<script src="{% static 'js/EM-linedetail-datatables.js' %}"></script>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-table"></i>
+        查看保養歷史紀錄
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="recordTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr class="text-center">
+                        <th>保養日期</th>
+                        <th>保養人</th>
+                        <th>保養項目</th>
+                        <th>附件</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in recordList %}
+                    <tr>
+                        <td class="text-center">{{ row.checkDate }}</td>
+                        <td class="text-center">{{ row.checkOwner }}</td>
+                        <td>
+                            {% for item in row.checkItemList %}
+                            {{ item }}<br>
+                            {% endfor %}
+                        </td>
+                        <td class="text-center">
+                            {% if row.checkFile != None %}
+                            <a href="{% url 'recordFileDownload' record_id=row.id %}">
+                                {{ row.checkFileName }}
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
